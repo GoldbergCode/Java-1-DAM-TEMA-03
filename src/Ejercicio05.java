@@ -2,11 +2,9 @@ import java.util.Scanner;
 public class Ejercicio05 {
 
   public static void main(String[] args) {
-    Scanner sc = new Scanner(System.in);
-    final int ANIOACTUAL = 2022;
-    int diasRestantes = 0;
     int[] meses = new int[12];
-    boolean isReset = false;
+    int restanteDias = 0;
+    final int ANIOACTUAL = 2022;
     
     meses[0] = 31;
     meses[1] = 28;
@@ -21,6 +19,8 @@ public class Ejercicio05 {
     meses[10] = 30;
     meses[11] = 31;
     
+    Scanner sc = new Scanner(System.in);
+    
     System.out.println("Introduzca una fecha para calcular lo que queda de año.");
     System.out.println("Primero, introduzca el número del día.");
     int dia = Integer.parseInt(sc.next());
@@ -29,41 +29,39 @@ public class Ejercicio05 {
     System.out.println("Por último, introduzca el año.");
     int anio = Integer.parseInt(sc.next());
     
-    // RESOLVEMOS PRIMER MES EN CURSO INTRODUCIDO
+    // AÑO INTRODUCIDO
+    
     if (anio % 4 == 0) {
       meses[1] = 29;
-      diasRestantes = ((diasRestantes + meses[(mes - 1)]) - dia);
     } else {
       meses[1] = 28;
-      diasRestantes = ((diasRestantes + meses[(mes - 1)]) - dia);
     }
-    // FOR HASTA QUE SEA 2023.
-    for (; anio <= ANIOACTUAL; anio++) {
-      if (isReset == true) {
-        mes = 1;
-        isReset = false;
-      }
-      // SI ES BISIESTO
+    restanteDias =  meses[mes - 1] - dia;
+    
+    for (; mes < meses.length; mes++) {
+      restanteDias += meses[mes];
+    }
+    anio++;
+    if (mes == 12) {
+      mes = 1;
+    }
+    for (;anio <= ANIOACTUAL;anio++) {
+      
       if (anio % 4 == 0) {
         meses[1] = 29;
-        for (; isReset == false; mes++) {
-          diasRestantes = (diasRestantes + meses[(mes - 1)]); 
-          if (mes == 11) {
-            isReset = true;
-          }
-        }
-        // SI NO ES BISIESTO
       } else {
         meses[1] = 28;
-        for (; isReset == false; mes++) {
-          diasRestantes = (diasRestantes + meses[(mes - 1)]); 
-          if (mes == 11) {
-            isReset = true;
-          }
-        }
+      }
+      for (; mes < meses.length; mes++) {
+      restanteDias += meses[mes - 1];
+      }
+      if (mes == 12) {
+        mes = 1;
+      } else {
+        mes++;
       }
     }
-    System.out.println("Quedan " + diasRestantes + " días hasta el final del año " + ANIOACTUAL);
-    
+    System.out.println("Quedan " + restanteDias);
   }
+
 }
